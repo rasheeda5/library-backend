@@ -2,8 +2,7 @@ const books = require("../models/books");
 
 exports.getAllBooks = async function (req, res) {
   try {
-    const book = await books.find({});
-    res.status(200).json({ book });
+    res.status(200).json(await books.find({}));
   } catch (error) {
     res.status(500).json({ message: "error.message" });
   }
