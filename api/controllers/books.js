@@ -1,8 +1,8 @@
-const books = require("../models/books");
+const Books = require("../models/Books");
 
 exports.getAllBooks = async function (req, res) {
   try {
-    res.status(200).json(await books.find({}));
+    res.status(200).json(await Books.find({}));
   } catch (error) {
     res.status(500).json({ message: "error.message" });
   }
@@ -10,11 +10,7 @@ exports.getAllBooks = async function (req, res) {
 
 exports.addABook = async function (req, res) {
   try {
-    var newBook = new books(req.body);
-    // new_book.save(function (err, book) {
-    //     if (err) res.send(err);
-    //     res.json(book);
-    //   });
+    var newBook = new Books(req.body);
     const book = await newBook.save({});
     res.status(200).json({ book });
   } catch (error) {

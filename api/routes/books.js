@@ -1,8 +1,8 @@
 const { Router } = require("express");
-const books = require("../controllers/books");
+const Books = require("../controllers/Books");
 
-module.exports = function (app) {
-  app.route("/books").get(books.getAllBooks).post(books.addABook);
+module.exports = (app) => {
+  app.route("/books").get(Books.getAllBooks).post(Books.addABook);
 
   //   app.route("/books/:bookId").get(books.get_details);
 };
