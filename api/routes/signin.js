@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const UserSession = require("../models/UserSession");
 
 module.exports = async (app) => {
   app.post("/api/account/signup", (req, res) => {
@@ -93,9 +94,41 @@ module.exports = async (app) => {
         if (err) {
           return res.send({
             success: false,
-            message: "Username does not exist",
+            message: "server error",
           });
         }
+        if (users.length != 1) {
+          return res.send({
+            success: false,
+            message: "User does not exist",
+          });
+        }
+
+        const user = users[0];
+        console.log(user.password);
+        if (!user.validPassword(password, user.password)) {
+          return res.send({
+            success: false,
+            message: "Invalid password",
+          });
+        }
+
+        const uSesh = new UserSession();
+        uSesh.userId = user._id;
+        uSesh.save((err, doc) => {
+          if (err) {
+            return res.send({
+              success: false,
+              message: "server error",
+            });
+          }
+
+          return res.send({
+            success: true,
+            message: "session created",
+            token: doc._id,
+          });
+        });
       }
     );
   });

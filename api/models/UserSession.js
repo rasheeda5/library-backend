@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 const UserSessionSchema = new mongoose.Schema({
   userId: {
-    type: Number,
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "Users",
     required: true,
-    default: -1,
   },
   timestamp: {
     type: Date,
