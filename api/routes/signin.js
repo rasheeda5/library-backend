@@ -70,6 +70,7 @@ module.exports = async (app) => {
       }
     );
   });
+
   app.post("/api/account/signin", (req, res) => {
     const { username, password } = req.body;
 
@@ -128,6 +129,69 @@ module.exports = async (app) => {
             message: "session created",
             token: doc._id,
           });
+        });
+      }
+    );
+  });
+
+  app.get("/api/account/verify", (req, res) => {
+    const { query } = req;
+    const { token } = query;
+
+    UserSession.find(
+      {
+        _id: token,
+        isDeleted: false,
+      },
+      (err, sessions) => {
+        if (err) {
+          console.log(err);
+          return res.send({
+            success: false,
+            message: "server error",
+          });
+        }
+
+        if (sessions.length != 1) {
+          return res.send({
+            success: false,
+            message: "does not exist",
+          });
+        }
+
+        return res.send({
+          success: true,
+          message: "all good",
+        });
+      }
+    );
+  });
+
+  app.get("/api/account/logout", (req, res) => {
+    const { query } = req;
+    const { token } = query;
+
+    UserSession.findOneAndUpdate(
+      {
+        _id: token,
+        isDeleted: false,
+      },
+      {
+        isDeleted: true,
+      },
+      null,
+      (err, sessions) => {
+        if (err) {
+          console.log(err);
+          return res.send({
+            success: false,
+            message: "server error",
+          });
+        }
+
+        return res.send({
+          success: true,
+          message: "all good",
         });
       }
     );
