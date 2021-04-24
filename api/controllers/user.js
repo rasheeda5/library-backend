@@ -105,7 +105,7 @@ exports.signin = async function (req, res) {
       }
 
       const user = users[0];
-      console.log(user.password);
+      // console.log(user.password);
       if (!user.validPassword(password, user.password)) {
         return res.send({
           success: false,
