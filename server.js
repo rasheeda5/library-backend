@@ -4,7 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
 const port = process.env.PORT || 8080;
-
+const routes = require("./api/routes");
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -26,7 +26,7 @@ mongoose.connection.on("connected", () => {
 
 app.use(bodyParser.json());
 
-require("./api/routes/signin")(app);
+app.use("/api", routes);
 
 app.use(function (req, res) {
   res.status(404).send({ url: req.originalUrl + " not found" });
